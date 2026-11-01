@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Customer Banking Portal</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
 
@@ -21,7 +23,7 @@ body {
 header {
     background: #a60000;
     color: white;
-    padding: 22px;
+    padding: 25px 15px;
     text-align: center;
 }
 
@@ -31,13 +33,13 @@ header h1 {
 }
 
 header p {
-    margin-top: 7px;
+    margin-top: 8px;
     font-size: 13px;
 }
 
 .container {
-    max-width: 900px;
-    margin: 30px auto;
+    max-width: 550px;
+    margin: 35px auto;
     padding: 15px;
 }
 
@@ -46,37 +48,37 @@ header p {
     padding: 25px;
     border-radius: 12px;
     margin-bottom: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+    box-shadow: 0 3px 12px rgba(0,0,0,.07);
 }
 
 h2 {
-    margin-bottom: 18px;
     color: #a60000;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin: 13px 0 7px;
     font-weight: bold;
+    margin: 13px 0 7px;
 }
 
-input, select, textarea {
+input {
     width: 100%;
-    padding: 13px;
+    padding: 14px;
     border: 1px solid #ddd;
     border-radius: 7px;
     font-size: 15px;
 }
 
 button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 7px;
     background: #a60000;
     color: white;
-    border: none;
-    padding: 14px;
-    width: 100%;
-    border-radius: 7px;
     font-size: 16px;
-    margin-top: 18px;
+    margin-top: 17px;
     cursor: pointer;
 }
 
@@ -84,26 +86,11 @@ button:hover {
     background: #800000;
 }
 
-.balance {
-    background: #a60000;
-    color: white;
-    padding: 25px;
-    border-radius: 12px;
-}
-
-.balance h2 {
-    color: white;
-}
-
-.balance h1 {
-    font-size: 30px;
-    margin-top: 12px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+.link {
+    text-align: center;
+    margin-top: 17px;
+    color: #a60000;
+    cursor: pointer;
 }
 
 .hidden {
@@ -114,8 +101,27 @@ button:hover {
     background: #fff4d6;
     padding: 13px;
     border-radius: 7px;
+    margin-bottom: 18px;
     font-size: 13px;
     line-height: 1.5;
+}
+
+.message {
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.profile {
+    background: #a60000;
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.profile h2 {
+    color: white;
 }
 
 footer {
@@ -124,12 +130,6 @@ footer {
     color: #777;
     font-size: 13px;
 }
-
-@media(max-width:600px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
-}
 </style>
 </head>
 
@@ -137,160 +137,302 @@ footer {
 
 <header>
     <h1>CUSTOMER BANKING PORTAL</h1>
-    <p>Secure Customer Account Services</p>
+    <p>Secure Customer Account Access</p>
 </header>
 
 <div class="container">
 
-    <div class="notice">
-        Secure banking portal interface. Live banking services require
-        an authorized bank API connection.
-    </div>
+<div class="notice">
+This is an independent customer portal. Real banking
+services require an authorized banking integration.
+</div>
 
-    <!-- LOGIN -->
-    <div class="card" id="loginSection">
+<!-- REGISTRATION -->
 
-        <h2>Customer Login</h2>
+<div class="card" id="registerSection">
 
-        <form id="loginForm">
+<h2>Create Customer Account</h2>
 
-            <label>Customer ID</label>
-            <input type="text" id="customerId"
-            placeholder="Enter your customer ID" required>
+<form id="registerForm">
 
-            <button type="submit">Continue</button>
+<label>Full Name</label>
+<input type="text" id="fullName" required>
 
-        </form>
+<label>Email Address</label>
+<input type="email" id="registerEmail" required>
 
-    </div>
+<label>Create Password</label>
+<input type="password" id="registerPassword"
+minlength="8" required>
 
-    <!-- DASHBOARD -->
-    <div id="dashboard" class="hidden">
+<button type="submit">Create Account</button>
 
-        <div class="balance">
+</form>
 
-            <h2>Welcome, Customer</h2>
+<p class="link" onclick="showLogin()">
+Already registered? Login
+</p>
 
-            <p>Account Balance</p>
+<p class="message" id="registerMessage"></p>
 
-            <h1>₦ ————</h1>
+</div>
 
-            <p>Balance available after secure account connection</p>
+<!-- LOGIN -->
 
-        </div>
+<div class="card hidden" id="loginSection">
 
-        <div class="card">
+<h2>Customer Login</h2>
 
-            <h2>Account Information</h2>
+<form id="loginForm">
 
-            <p>Customer ID: <span id="displayId"></span></p>
+<label>Email Address</label>
+<input type="email" id="loginEmail" required>
 
-            <p>Account Number: Not connected</p>
+<label>Password</label>
+<input type="password" id="loginPassword" required>
 
-            <p>Account Status: Awaiting verification</p>
+<button type="submit">Login</button>
 
-        </div>
+</form>
 
-        <div class="card">
+<p class="link" onclick="showRegister()">
+Create a new account
+</p>
 
-            <h2>Transfer Request</h2>
+<p class="link" onclick="resetPassword()">
+Forgot Password?
+</p>
 
-            <form id="transferForm">
+<p class="message" id="loginMessage"></p>
 
-                <label>Beneficiary Name</label>
-                <input type="text" required>
+</div>
 
-                <label>Beneficiary Bank</label>
-                <select required>
-                    <option value="">Select Bank</option>
-                    <option>UBA</option>
-                    <option>Access Bank</option>
-                    <option>First Bank</option>
-                    <option>GTBank</option>
-                    <option>Zenith Bank</option>
-                    <option>Other</option>
-                </select>
+<!-- DASHBOARD -->
 
-                <label>Beneficiary Account Number</label>
-                <input type="text" maxlength="10"
-                pattern="[0-9]{10}" required>
+<div class="hidden" id="dashboard">
 
-                <label>Transfer Amount (₦)</label>
-                <input type="number" min="1"
-                placeholder="Enter amount" required>
+<div class="profile">
 
-                <label>Transfer Description</label>
-                <textarea rows="3"></textarea>
+<h2>Welcome</h2>
 
-                <button type="submit">
-                    Submit Transfer Request
-                </button>
+<p id="customerName"></p>
 
-            </form>
+<p id="customerEmail"></p>
 
-            <p id="transferMessage"></p>
+</div>
 
-        </div>
+<div class="card">
 
-        <div class="card">
+<h2>Account Overview</h2>
 
-            <h2>Transaction History</h2>
+<p>Customer ID:</p>
+<p id="customerId"></p>
 
-            <p>Transactions will appear here after secure banking integration.</p>
+<br>
 
-        </div>
+<p>Bank account: Not connected</p>
 
-        <button onclick="logout()">Logout</button>
+<br>
 
-    </div>
+<p>Available balance: Not connected</p>
+
+</div>
+
+<div class="card">
+
+<h2>Banking Services</h2>
+
+<p>
+Bank account creation, balance enquiries and transfers
+will become available only after authorized banking
+integration.
+</p>
+
+</div>
+
+<button onclick="logout()">Logout</button>
+
+</div>
 
 </div>
 
 <footer>
-    Customer Banking Portal
-    <br><br>
-    © 2026 All Rights Reserved.
+Independent Customer Portal
+<br><br>
+© 2026 All Rights Reserved.
 </footer>
 
 <script>
 
-document.getElementById("loginForm")
-.addEventListener("submit", function(e) {
+const SUPABASE_URL =
+"https://cfqcdnoopkovrojbazhz.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_83t_5fzTy-ZKvHfPmj7vOQ_m-ZKl2ec";
+
+const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+function showLogin() {
+    document.getElementById("registerSection").classList.add("hidden");
+    document.getElementById("loginSection").classList.remove("hidden");
+}
+
+function showRegister() {
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("registerSection").classList.remove("hidden");
+}
+
+document.getElementById("registerForm")
+.addEventListener("submit", async function(e) {
 
     e.preventDefault();
 
-    const customerId =
-    document.getElementById("customerId").value.trim();
+    const name = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("registerEmail").value.trim();
+    const password = document.getElementById("registerPassword").value;
 
-    if (!customerId) return;
+    const message = document.getElementById("registerMessage");
 
-    document.getElementById("displayId").textContent = customerId;
+    message.textContent = "Creating your account...";
 
+    const { data, error } = await db.auth.signUp({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        message.textContent = error.message;
+        return;
+    }
+
+    if (data.user) {
+
+        if (data.session) {
+
+            const { error: profileError } = await db
+            .from("customer_profiles")
+            .insert({
+                id: data.user.id,
+                customer_id: "CUS-" + data.user.id.substring(0,8),
+                full_name: name
+            });
+
+            if (profileError) {
+                message.textContent =
+                "Account created, but profile setup needs attention.";
+                return;
+            }
+
+            message.textContent = "Account created successfully.";
+
+            await loadDashboard();
+
+        } else {
+
+            message.textContent =
+            "Registration received. Please check your email to confirm your account.";
+
+        }
+
+    }
+
+});
+
+document.getElementById("loginForm")
+.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    const message = document.getElementById("loginMessage");
+
+    message.textContent = "Signing in...";
+
+    const { error } = await db.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        message.textContent = error.message;
+        return;
+    }
+
+    await loadDashboard();
+
+});
+
+async function loadDashboard() {
+
+    const { data: { user } } = await db.auth.getUser();
+
+    if (!user) return;
+
+    const { data: profile, error } = await db
+    .from("customer_profiles")
+    .select("customer_id, full_name")
+    .eq("id", user.id)
+    .single();
+
+    if (error) {
+        document.getElementById("loginMessage").textContent =
+        "Your profile needs setup. Please contact support.";
+        return;
+    }
+
+    document.getElementById("registerSection").classList.add("hidden");
     document.getElementById("loginSection").classList.add("hidden");
-
     document.getElementById("dashboard").classList.remove("hidden");
 
-});
+    document.getElementById("customerName").textContent =
+    profile.full_name || "Customer";
 
-document.getElementById("transferForm")
-.addEventListener("submit", function(e) {
+    document.getElementById("customerEmail").textContent =
+    user.email;
 
-    e.preventDefault();
-
-    document.getElementById("transferMessage").textContent =
-    "Transfer requests are unavailable until the authorized banking API is connected.";
-
-});
-
-function logout() {
-
-    document.getElementById("dashboard").classList.add("hidden");
-
-    document.getElementById("loginSection").classList.remove("hidden");
-
-    document.getElementById("loginForm").reset();
+    document.getElementById("customerId").textContent =
+    profile.customer_id;
 
 }
+
+async function resetPassword() {
+
+    const email = document.getElementById("loginEmail").value.trim();
+
+    if (!email) {
+        alert("Enter your email address first.");
+        return;
+    }
+
+    const { error } = await db.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin
+    });
+
+    alert(error ? error.message : "Password recovery email requested.");
+
+}
+
+async function logout() {
+
+    await db.auth.signOut();
+
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("loginSection").classList.remove("hidden");
+
+}
+
+db.auth.onAuthStateChange((event, session) => {
+
+    if (event === "SIGNED_IN" && session) {
+        setTimeout(loadDashboard, 0);
+    }
+
+});
 
 </script>
 
