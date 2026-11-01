@@ -3,11 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Customer Banking Portal</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+:root {
+    --navy: #10243e;
+    --navy-light: #193858;
+    --green: #16a36a;
+    --green-dark: #087c4c;
+    --background: #f3f6fa;
+    --white: #ffffff;
+    --text: #243247;
+    --muted: #718096;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -16,119 +28,360 @@
 }
 
 body {
-    background: #f3f5f8;
-    color: #222;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
 }
+
+/* HEADER */
 
 header {
-    background: #a60000;
+    background: var(--navy);
     color: white;
-    padding: 25px 15px;
-    text-align: center;
+    padding: 22px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
-header h1 {
-    font-size: 25px;
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    width: 43px;
+    height: 43px;
+    background: var(--green);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
     font-weight: bold;
 }
 
-header p {
-    margin-top: 8px;
-    font-size: 13px;
+.brand h1 {
+    font-size: 19px;
+    letter-spacing: .5px;
 }
 
+.brand p {
+    color: #b9c9d9;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.header-label {
+    border: 1px solid #496078;
+    border-radius: 25px;
+    padding: 9px 15px;
+    font-size: 12px;
+    color: #d7e4ef;
+}
+
+/* HERO */
+
+.hero {
+    background: linear-gradient(120deg, #10243e, #214b70);
+    color: white;
+    padding: 55px 7% 75px;
+}
+
+.hero-content {
+    max-width: 1050px;
+    margin: auto;
+}
+
+.hero h2 {
+    font-size: 34px;
+    line-height: 1.3;
+    max-width: 600px;
+    margin-bottom: 15px;
+}
+
+.hero h2 span {
+    color: #49d99b;
+}
+
+.hero p {
+    color: #d4e0ec;
+    line-height: 1.7;
+    max-width: 570px;
+    font-size: 15px;
+}
+
+/* MAIN */
+
 .container {
-    max-width: 550px;
-    margin: 35px auto;
-    padding: 15px;
+    max-width: 1050px;
+    margin: -35px auto 50px;
+    padding: 0 18px;
+    position: relative;
+}
+
+.login-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    align-items: stretch;
 }
 
 .card {
     background: white;
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,.07);
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(20, 40, 65, .09);
 }
 
-h2 {
-    color: #a60000;
-    margin-bottom: 20px;
+.card h2 {
+    color: var(--navy);
+    font-size: 23px;
+    margin-bottom: 10px;
+}
+
+.card-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 25px;
 }
 
 label {
     display: block;
+    font-size: 13px;
     font-weight: bold;
-    margin: 13px 0 7px;
+    color: #35465a;
+    margin: 17px 0 8px;
 }
 
 input {
     width: 100%;
-    padding: 14px;
-    border: 1px solid #ddd;
-    border-radius: 7px;
+    padding: 15px;
+    border: 1px solid #dce3eb;
+    border-radius: 9px;
     font-size: 15px;
+    outline: none;
+    background: #fbfcfe;
+}
+
+input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(22, 163, 106, .10);
 }
 
 button {
     width: 100%;
-    padding: 14px;
+    padding: 15px;
     border: none;
-    border-radius: 7px;
-    background: #a60000;
+    border-radius: 9px;
+    background: var(--green);
     color: white;
-    font-size: 16px;
-    margin-top: 17px;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 23px;
     cursor: pointer;
+    transition: .2s;
 }
 
 button:hover {
-    background: #800000;
+    background: var(--green-dark);
 }
 
-.link {
+button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.forgot {
     text-align: center;
-    margin-top: 17px;
-    color: #a60000;
-    cursor: pointer;
-}
-
-.hidden {
-    display: none;
-}
-
-.notice {
-    background: #fff4d6;
-    padding: 13px;
-    border-radius: 7px;
-    margin-bottom: 18px;
+    color: var(--green-dark);
+    margin-top: 20px;
     font-size: 13px;
-    line-height: 1.5;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .message {
     margin-top: 15px;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
 }
 
-.profile {
-    background: #a60000;
-    color: white;
-    padding: 25px;
-    border-radius: 12px;
+/* INFORMATION PANEL */
+
+.info-panel {
+    background: #eaf7f1;
+    border: 1px solid #d3eee0;
+    padding: 30px;
+    border-radius: 16px;
+}
+
+.info-panel h2 {
+    color: var(--navy);
+    font-size: 21px;
     margin-bottom: 20px;
 }
 
-.profile h2 {
-    color: white;
+.info-item {
+    display: flex;
+    gap: 13px;
+    margin-bottom: 23px;
 }
 
+.info-icon {
+    min-width: 38px;
+    height: 38px;
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green-dark);
+    font-weight: bold;
+}
+
+.info-item h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: var(--navy);
+}
+
+.info-item p {
+    color: #61766d;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.security-note {
+    border-top: 1px solid #cfe6d9;
+    padding-top: 17px;
+    color: #567165;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* DASHBOARD */
+
+.hidden {
+    display: none !important;
+}
+
+.dashboard {
+    max-width: 900px;
+    margin: 35px auto 55px;
+    padding: 0 18px;
+}
+
+.welcome-card {
+    background: linear-gradient(120deg, #10243e, #214b70);
+    color: white;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 22px;
+}
+
+.welcome-card h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.welcome-card p {
+    color: #d5e3ef;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 27px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(20, 40, 65, .06);
+}
+
+.dashboard-card h3 {
+    color: var(--navy);
+    margin-bottom: 20px;
+}
+
+.detail {
+    padding: 14px 0;
+    border-bottom: 1px solid #edf0f4;
+}
+
+.detail:last-child {
+    border-bottom: none;
+}
+
+.detail small {
+    color: var(--muted);
+    display: block;
+    margin-bottom: 7px;
+}
+
+.detail strong {
+    color: var(--navy);
+    overflow-wrap: anywhere;
+}
+
+.logout {
+    background: #d94343;
+}
+
+.logout:hover {
+    background: #b92f2f;
+}
+
+/* FOOTER */
+
 footer {
+    background: var(--navy);
+    color: #b9c9d9;
+    padding: 25px 15px;
     text-align: center;
-    padding: 25px;
-    color: #777;
-    font-size: 13px;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+@media(max-width: 700px) {
+
+    header {
+        padding: 18px;
+    }
+
+    .brand h1 {
+        font-size: 16px;
+    }
+
+    .header-label {
+        font-size: 11px;
+    }
+
+    .hero {
+        padding: 40px 22px 65px;
+    }
+
+    .hero h2 {
+        font-size: 27px;
+    }
+
+    .login-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 25px 21px;
+    }
+
+    .info-panel {
+        padding: 25px 21px;
+    }
 }
 </style>
 </head>
@@ -136,130 +389,219 @@ footer {
 <body>
 
 <header>
-    <h1>CUSTOMER BANKING PORTAL</h1>
-    <p>Secure Customer Account Access</p>
+
+    <div class="brand">
+        <div class="brand-icon">C</div>
+
+        <div>
+            <h1>CUSTOMER BANKING PORTAL</h1>
+            <p>Secure Customer Account Access</p>
+        </div>
+    </div>
+
+    <div class="header-label">
+        SECURE CUSTOMER PORTAL
+    </div>
+
 </header>
 
-<div class="container">
+<section class="hero">
 
-<div class="notice">
-This is an independent customer portal. Real banking
-services require an authorized banking integration.
+    <div class="hero-content">
+
+        <h2>
+            Welcome to Your
+            <span>Customer Portal</span>
+        </h2>
+
+        <p>
+            Access your personal customer account through
+            a secure and convenient online portal.
+            Sign in to view the account information
+            made available to you.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- LOGIN PAGE -->
+
+<div class="container" id="loginPage">
+
+    <div class="login-layout">
+
+        <div class="card">
+
+            <h2>Customer Login</h2>
+
+            <p class="card-subtitle">
+                Enter the login details provided by your administrator.
+            </p>
+
+            <form id="loginForm">
+
+                <label>Email Address</label>
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Enter your email address"
+                    autocomplete="username"
+                    required
+                >
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button type="submit" id="loginButton">
+                    Sign In Securely
+                </button>
+
+            </form>
+
+            <p class="forgot" onclick="resetPassword()">
+                Forgot your password?
+            </p>
+
+            <p class="message" id="loginMessage"></p>
+
+        </div>
+
+        <div class="info-panel">
+
+            <h2>Your Account, Your Information</h2>
+
+            <div class="info-item">
+
+                <div class="info-icon">01</div>
+
+                <div>
+                    <h3>Private Customer Access</h3>
+                    <p>
+                        Your account is created and managed
+                        by the administrator.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="info-item">
+
+                <div class="info-icon">02</div>
+
+                <div>
+                    <h3>Personal Account Details</h3>
+                    <p>
+                        Sign in to view the customer
+                        information assigned to your account.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="info-item">
+
+                <div class="info-icon">03</div>
+
+                <div>
+                    <h3>Secure Login</h3>
+                    <p>
+                        Your login is protected by
+                        Supabase authentication.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="security-note">
+                For account assistance, contact the
+                administrator who provided your login details.
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
-<!-- REGISTRATION -->
+<!-- CUSTOMER DASHBOARD -->
 
-<div class="card" id="registerSection">
+<div class="dashboard hidden" id="dashboard">
 
-<h2>Create Customer Account</h2>
+    <div class="welcome-card">
 
-<form id="registerForm">
+        <h2>Welcome, <span id="customerName">Customer</span></h2>
 
-<label>Full Name</label>
-<input type="text" id="fullName" required>
+        <p>
+            You are successfully signed in to your
+            customer portal.
+        </p>
 
-<label>Email Address</label>
-<input type="email" id="registerEmail" required>
+    </div>
 
-<label>Create Password</label>
-<input type="password" id="registerPassword"
-minlength="8" required>
+    <div class="dashboard-card">
 
-<button type="submit">Create Account</button>
+        <h3>Customer Account Information</h3>
 
-</form>
+        <div class="detail">
+            <small>Full Name</small>
+            <strong id="dashboardName">Customer</strong>
+        </div>
 
-<p class="link" onclick="showLogin()">
-Already registered? Login
-</p>
+        <div class="detail">
+            <small>Email Address</small>
+            <strong id="customerEmail"></strong>
+        </div>
 
-<p class="message" id="registerMessage"></p>
+        <div class="detail">
+            <small>Customer ID</small>
+            <strong id="customerId"></strong>
+        </div>
 
-</div>
+    </div>
 
-<!-- LOGIN -->
+    <div class="dashboard-card">
 
-<div class="card hidden" id="loginSection">
+        <h3>Account Updates</h3>
 
-<h2>Customer Login</h2>
+        <p style="color:#718096; font-size:14px; line-height:1.7;">
+            Account information and updates will appear here
+            when configured by your administrator.
+        </p>
 
-<form id="loginForm">
+    </div>
 
-<label>Email Address</label>
-<input type="email" id="loginEmail" required>
-
-<label>Password</label>
-<input type="password" id="loginPassword" required>
-
-<button type="submit">Login</button>
-
-</form>
-
-<p class="link" onclick="showRegister()">
-Create a new account
-</p>
-
-<p class="link" onclick="resetPassword()">
-Forgot Password?
-</p>
-
-<p class="message" id="loginMessage"></p>
-
-</div>
-
-<!-- DASHBOARD -->
-
-<div class="hidden" id="dashboard">
-
-<div class="profile">
-
-<h2>Welcome</h2>
-
-<p id="customerName"></p>
-
-<p id="customerEmail"></p>
-
-</div>
-
-<div class="card">
-
-<h2>Account Overview</h2>
-
-<p>Customer ID:</p>
-<p id="customerId"></p>
-
-<br>
-
-<p>Bank account: Not connected</p>
-
-<br>
-
-<p>Available balance: Not connected</p>
-
-</div>
-
-<div class="card">
-
-<h2>Banking Services</h2>
-
-<p>
-Bank account creation, balance enquiries and transfers
-will become available only after authorized banking
-integration.
-</p>
-
-</div>
-
-<button onclick="logout()">Logout</button>
-
-</div>
+    <button class="logout" onclick="logout()">
+        Sign Out
+    </button>
 
 </div>
 
 <footer>
-Independent Customer Portal
-<br><br>
-© 2026 All Rights Reserved.
+
+    CUSTOMER BANKING PORTAL
+
+    <br>
+
+    Secure Customer Account Access
+
+    <br><br>
+
+    © 2026 All Rights Reserved.
+
+    <br>
+
+    Independent Customer Portal.
+    Real financial transfers require authorized payment services.
+
 </footer>
 
 <script>
@@ -275,91 +617,41 @@ const db = window.supabase.createClient(
     SUPABASE_KEY
 );
 
-function showLogin() {
-    document.getElementById("registerSection").classList.add("hidden");
-    document.getElementById("loginSection").classList.remove("hidden");
-}
+const loginPage = document.getElementById("loginPage");
+const dashboard = document.getElementById("dashboard");
+const loginMessage = document.getElementById("loginMessage");
 
-function showRegister() {
-    document.getElementById("loginSection").classList.add("hidden");
-    document.getElementById("registerSection").classList.remove("hidden");
-}
-
-document.getElementById("registerForm")
-.addEventListener("submit", async function(e) {
-
-    e.preventDefault();
-
-    const name = document.getElementById("fullName").value.trim();
-    const email = document.getElementById("registerEmail").value.trim();
-    const password = document.getElementById("registerPassword").value;
-
-    const message = document.getElementById("registerMessage");
-
-    message.textContent = "Creating your account...";
-
-    const { data, error } = await db.auth.signUp({
-        email: email,
-        password: password
-    });
-
-    if (error) {
-        message.textContent = error.message;
-        return;
-    }
-
-    if (data.user) {
-
-        if (data.session) {
-
-            const { error: profileError } = await db
-            .from("customer_profiles")
-            .insert({
-                id: data.user.id,
-                customer_id: "CUS-" + data.user.id.substring(0,8),
-                full_name: name
-            });
-
-            if (profileError) {
-                message.textContent =
-                "Account created, but profile setup needs attention.";
-                return;
-            }
-
-            message.textContent = "Account created successfully.";
-
-            await loadDashboard();
-
-        } else {
-
-            message.textContent =
-            "Registration received. Please check your email to confirm your account.";
-
-        }
-
-    }
-
-});
+let loadingDashboard = false;
 
 document.getElementById("loginForm")
 .addEventListener("submit", async function(e) {
 
     e.preventDefault();
 
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
+    const email =
+    document.getElementById("loginEmail").value.trim();
 
-    const message = document.getElementById("loginMessage");
+    const password =
+    document.getElementById("loginPassword").value;
 
-    message.textContent = "Signing in...";
+    const button =
+    document.getElementById("loginButton");
+
+    loginMessage.textContent = "Signing in...";
+
+    button.disabled = true;
 
     const { error } = await db.auth.signInWithPassword({
         email: email,
         password: password
     });
 
+    button.disabled = false;
+
     if (error) {
-        message.textContent = error.message;
+
+        loginMessage.textContent = error.message;
+
         return;
     }
 
@@ -369,51 +661,86 @@ document.getElementById("loginForm")
 
 async function loadDashboard() {
 
-    const { data: { user } } = await db.auth.getUser();
+    if (loadingDashboard) return;
 
-    if (!user) return;
+    loadingDashboard = true;
 
-    const { data: profile, error } = await db
-    .from("customer_profiles")
-    .select("customer_id, full_name")
-    .eq("id", user.id)
-    .single();
+    try {
 
-    if (error) {
-        document.getElementById("loginMessage").textContent =
-        "Your profile needs setup. Please contact support.";
-        return;
+        const {
+            data: { user },
+            error: userError
+        } = await db.auth.getUser();
+
+        if (userError || !user) {
+            loginMessage.textContent =
+            "Please sign in again.";
+            return;
+        }
+
+        const { data: profile, error } = await db
+        .from("customer_profiles")
+        .select("customer_id, full_name")
+        .eq("id", user.id)
+        .single();
+
+        if (error || !profile) {
+
+            loginMessage.textContent =
+            "Your customer profile needs setup. Please contact the administrator.";
+
+            return;
+        }
+
+        document.getElementById("customerName").textContent =
+        profile.full_name || "Customer";
+
+        document.getElementById("dashboardName").textContent =
+        profile.full_name || "Customer";
+
+        document.getElementById("customerEmail").textContent =
+        user.email || "";
+
+        document.getElementById("customerId").textContent =
+        profile.customer_id || "Not assigned";
+
+        loginPage.classList.add("hidden");
+
+        dashboard.classList.remove("hidden");
+
+        window.scrollTo(0, 0);
+
+    } finally {
+
+        loadingDashboard = false;
+
     }
-
-    document.getElementById("registerSection").classList.add("hidden");
-    document.getElementById("loginSection").classList.add("hidden");
-    document.getElementById("dashboard").classList.remove("hidden");
-
-    document.getElementById("customerName").textContent =
-    profile.full_name || "Customer";
-
-    document.getElementById("customerEmail").textContent =
-    user.email;
-
-    document.getElementById("customerId").textContent =
-    profile.customer_id;
 
 }
 
 async function resetPassword() {
 
-    const email = document.getElementById("loginEmail").value.trim();
+    const email =
+    document.getElementById("loginEmail").value.trim();
 
     if (!email) {
-        alert("Enter your email address first.");
+
+        loginMessage.textContent =
+        "Please enter your email address first.";
+
         return;
     }
+
+    loginMessage.textContent =
+    "Requesting password recovery...";
 
     const { error } = await db.auth.resetPasswordForEmail(email, {
         redirectTo: window.location.origin
     });
 
-    alert(error ? error.message : "Password recovery email requested.");
+    loginMessage.textContent = error
+        ? error.message
+        : "If the email is registered, password recovery instructions will be sent.";
 
 }
 
@@ -421,8 +748,15 @@ async function logout() {
 
     await db.auth.signOut();
 
-    document.getElementById("dashboard").classList.add("hidden");
-    document.getElementById("loginSection").classList.remove("hidden");
+    dashboard.classList.add("hidden");
+
+    loginPage.classList.remove("hidden");
+
+    document.getElementById("loginForm").reset();
+
+    loginMessage.textContent = "";
+
+    window.scrollTo(0, 0);
 
 }
 
@@ -432,7 +766,26 @@ db.auth.onAuthStateChange((event, session) => {
         setTimeout(loadDashboard, 0);
     }
 
+    if (event === "SIGNED_OUT") {
+        dashboard.classList.add("hidden");
+        loginPage.classList.remove("hidden");
+    }
+
 });
+
+async function checkExistingSession() {
+
+    const {
+        data: { session }
+    } = await db.auth.getSession();
+
+    if (session) {
+        await loadDashboard();
+    }
+
+}
+
+checkExistingSession();
 
 </script>
 
