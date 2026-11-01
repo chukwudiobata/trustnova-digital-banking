@@ -4,33 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Customer Banking Portal</title>
+<title>TRUSTNOVA BANKING | Customer Portal</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root {
-    --navy: #10243e;
-    --navy-light: #193858;
-    --green: #16a36a;
-    --green-dark: #087c4c;
-    --background: #f3f6fa;
-    --white: #ffffff;
-    --text: #243247;
-    --muted: #718096;
-}
-
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
 
+:root {
+    --navy: #102744;
+    --blue: #17466e;
+    --green: #13a36b;
+    --light: #f3f7fb;
+    --white: #ffffff;
+}
+
 body {
-    background: var(--background);
-    color: var(--text);
-    min-height: 100vh;
+    background: var(--light);
+    color: #26364a;
 }
 
 /* HEADER */
@@ -38,69 +34,75 @@ body {
 header {
     background: var(--navy);
     color: white;
-    padding: 22px 6%;
+    padding: 20px 6%;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
     gap: 15px;
 }
 
-.brand {
+.logo {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.brand-icon {
-    width: 43px;
-    height: 43px;
+.logo-icon {
     background: var(--green);
+    width: 48px;
+    height: 48px;
     border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 23px;
+    display: grid;
+    place-items: center;
+    font-size: 25px;
     font-weight: bold;
 }
 
-.brand h1 {
-    font-size: 19px;
-    letter-spacing: .5px;
+.logo h1 {
+    font-size: 21px;
+    letter-spacing: 1px;
 }
 
-.brand p {
-    color: #b9c9d9;
+.logo p {
+    color: #c3d2e2;
     font-size: 12px;
     margin-top: 5px;
 }
 
-.header-label {
-    border: 1px solid #496078;
+.header-tag {
+    border: 1px solid #55708b;
+    padding: 10px 17px;
     border-radius: 25px;
-    padding: 9px 15px;
     font-size: 12px;
-    color: #d7e4ef;
 }
 
 /* HERO */
 
 .hero {
-    background: linear-gradient(120deg, #10243e, #214b70);
+    min-height: 390px;
+    background:
+    linear-gradient(90deg,
+    rgba(10,31,55,.95),
+    rgba(10,31,55,.65)),
+    url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=85");
+
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    padding: 60px 8%;
     color: white;
-    padding: 55px 7% 75px;
 }
 
 .hero-content {
-    max-width: 1050px;
-    margin: auto;
+    max-width: 650px;
 }
 
 .hero h2 {
-    font-size: 34px;
-    line-height: 1.3;
-    max-width: 600px;
-    margin-bottom: 15px;
+    font-size: 43px;
+    line-height: 1.25;
+    margin-bottom: 18px;
 }
 
 .hero h2 span {
@@ -108,45 +110,44 @@ header {
 }
 
 .hero p {
-    color: #d4e0ec;
-    line-height: 1.7;
-    max-width: 570px;
-    font-size: 15px;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #e0eaf3;
+    max-width: 560px;
 }
 
 /* MAIN */
 
 .container {
-    max-width: 1050px;
-    margin: -35px auto 50px;
+    max-width: 1100px;
+    margin: -45px auto 60px;
     padding: 0 18px;
     position: relative;
 }
 
-.login-layout {
+.layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 25px;
-    align-items: stretch;
 }
 
 .card {
     background: white;
     padding: 32px;
     border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(20, 40, 65, .09);
+    box-shadow: 0 8px 30px rgba(15,40,70,.09);
 }
 
 .card h2 {
     color: var(--navy);
-    font-size: 23px;
-    margin-bottom: 10px;
+    font-size: 25px;
+    margin-bottom: 12px;
 }
 
-.card-subtitle {
-    color: var(--muted);
+.subtitle {
+    color: #78889a;
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.7;
     margin-bottom: 25px;
 }
 
@@ -154,8 +155,7 @@ label {
     display: block;
     font-size: 13px;
     font-weight: bold;
-    color: #35465a;
-    margin: 17px 0 8px;
+    margin: 18px 0 8px;
 }
 
 input {
@@ -170,97 +170,94 @@ input {
 
 input:focus {
     border-color: var(--green);
-    box-shadow: 0 0 0 3px rgba(22, 163, 106, .10);
 }
 
 button {
     width: 100%;
-    padding: 15px;
+    padding: 16px;
     border: none;
     border-radius: 9px;
     background: var(--green);
     color: white;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
     margin-top: 23px;
     cursor: pointer;
-    transition: .2s;
 }
 
 button:hover {
-    background: var(--green-dark);
+    background: #087d50;
 }
 
 button:disabled {
     opacity: .6;
-    cursor: not-allowed;
 }
 
 .forgot {
     text-align: center;
-    color: var(--green-dark);
+    color: var(--green);
     margin-top: 20px;
     font-size: 13px;
-    cursor: pointer;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .message {
-    margin-top: 15px;
     font-size: 13px;
     line-height: 1.6;
+    margin-top: 15px;
     overflow-wrap: anywhere;
 }
 
-/* INFORMATION PANEL */
+/* INFORMATION */
 
-.info-panel {
-    background: #eaf7f1;
-    border: 1px solid #d3eee0;
-    padding: 30px;
+.info-card {
+    background: white;
     border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(15,40,70,.09);
 }
 
-.info-panel h2 {
+.info-card img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+}
+
+.info-content {
+    padding: 25px;
+}
+
+.info-content h2 {
     color: var(--navy);
+    margin-bottom: 18px;
     font-size: 21px;
+}
+
+.feature {
+    display: flex;
+    gap: 13px;
     margin-bottom: 20px;
 }
 
-.info-item {
-    display: flex;
-    gap: 13px;
-    margin-bottom: 23px;
-}
-
-.info-icon {
+.feature-icon {
+    background: #e5f7ee;
+    color: #087d50;
     min-width: 38px;
     height: 38px;
-    background: white;
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--green-dark);
+    display: grid;
+    place-items: center;
     font-weight: bold;
 }
 
-.info-item h3 {
+.feature h3 {
     font-size: 14px;
-    margin-bottom: 5px;
-    color: var(--navy);
+    margin-bottom: 6px;
 }
 
-.info-item p {
-    color: #61766d;
-    font-size: 12px;
-    line-height: 1.6;
-}
-
-.security-note {
-    border-top: 1px solid #cfe6d9;
-    padding-top: 17px;
-    color: #567165;
+.feature p {
+    color: #78889a;
     font-size: 12px;
     line-height: 1.6;
 }
@@ -272,56 +269,51 @@ button:disabled {
 }
 
 .dashboard {
-    max-width: 900px;
-    margin: 35px auto 55px;
+    max-width: 950px;
+    margin: 40px auto;
     padding: 0 18px;
 }
 
-.welcome-card {
-    background: linear-gradient(120deg, #10243e, #214b70);
+.welcome {
+    background: linear-gradient(120deg, #102744, #23618a);
+    padding: 35px;
     color: white;
-    padding: 30px;
     border-radius: 16px;
     margin-bottom: 22px;
 }
 
-.welcome-card h2 {
-    font-size: 24px;
+.welcome h2 {
+    font-size: 25px;
     margin-bottom: 12px;
 }
 
-.welcome-card p {
+.welcome p {
     color: #d5e3ef;
     font-size: 14px;
-    line-height: 1.7;
-    overflow-wrap: anywhere;
+    line-height: 1.6;
 }
 
 .dashboard-card {
     background: white;
-    padding: 27px;
+    padding: 28px;
     border-radius: 14px;
     margin-bottom: 20px;
-    box-shadow: 0 5px 20px rgba(20, 40, 65, .06);
+    box-shadow: 0 5px 20px rgba(15,40,70,.06);
 }
 
 .dashboard-card h3 {
     color: var(--navy);
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .detail {
-    padding: 14px 0;
+    padding: 15px 0;
     border-bottom: 1px solid #edf0f4;
 }
 
-.detail:last-child {
-    border-bottom: none;
-}
-
 .detail small {
-    color: var(--muted);
     display: block;
+    color: #78889a;
     margin-bottom: 7px;
 }
 
@@ -335,52 +327,44 @@ button:disabled {
 }
 
 .logout:hover {
-    background: #b92f2f;
+    background: #b52e2e;
 }
 
 /* FOOTER */
 
 footer {
     background: var(--navy);
-    color: #b9c9d9;
-    padding: 25px 15px;
+    color: #bdcddd;
     text-align: center;
+    padding: 30px 15px;
     font-size: 12px;
-    line-height: 1.8;
+    line-height: 1.9;
 }
 
-@media(max-width: 700px) {
-
+@media(max-width: 750px) {
     header {
         padding: 18px;
     }
 
-    .brand h1 {
-        font-size: 16px;
-    }
-
-    .header-label {
-        font-size: 11px;
+    .logo h1 {
+        font-size: 17px;
     }
 
     .hero {
-        padding: 40px 22px 65px;
+        min-height: 330px;
+        padding: 45px 23px;
     }
 
     .hero h2 {
-        font-size: 27px;
+        font-size: 32px;
     }
 
-    .login-layout {
+    .layout {
         grid-template-columns: 1fr;
     }
 
     .card {
-        padding: 25px 21px;
-    }
-
-    .info-panel {
-        padding: 25px 21px;
+        padding: 25px 20px;
     }
 }
 </style>
@@ -390,17 +374,17 @@ footer {
 
 <header>
 
-    <div class="brand">
-        <div class="brand-icon">C</div>
+    <div class="logo">
+        <div class="logo-icon">T</div>
 
         <div>
-            <h1>CUSTOMER BANKING PORTAL</h1>
-            <p>Secure Customer Account Access</p>
+            <h1>TRUSTNOVA BANKING</h1>
+            <p>Customer Account Portal</p>
         </div>
     </div>
 
-    <div class="header-label">
-        SECURE CUSTOMER PORTAL
+    <div class="header-tag">
+        CUSTOMER ACCESS
     </div>
 
 </header>
@@ -410,33 +394,34 @@ footer {
     <div class="hero-content">
 
         <h2>
-            Welcome to Your
-            <span>Customer Portal</span>
+            Welcome to
+            <span>TRUSTNOVA BANKING</span>
         </h2>
 
         <p>
-            Access your personal customer account through
-            a secure and convenient online portal.
-            Sign in to view the account information
-            made available to you.
+            A convenient online portal for accessing
+            your customer account information.
+            Sign in securely using the details
+            provided by your administrator.
         </p>
 
     </div>
 
 </section>
 
-<!-- LOGIN PAGE -->
+<!-- LOGIN -->
 
 <div class="container" id="loginPage">
 
-    <div class="login-layout">
+    <div class="layout">
 
         <div class="card">
 
             <h2>Customer Login</h2>
 
-            <p class="card-subtitle">
-                Enter the login details provided by your administrator.
+            <p class="subtitle">
+                Welcome back. Enter your account
+                credentials to continue.
             </p>
 
             <form id="loginForm">
@@ -446,8 +431,7 @@ footer {
                 <input
                     type="email"
                     id="loginEmail"
-                    placeholder="Enter your email address"
-                    autocomplete="username"
+                    placeholder="Enter your email"
                     required
                 >
 
@@ -457,73 +441,76 @@ footer {
                     type="password"
                     id="loginPassword"
                     placeholder="Enter your password"
-                    autocomplete="current-password"
                     required
                 >
 
                 <button type="submit" id="loginButton">
-                    Sign In Securely
+                    LOGIN TO YOUR ACCOUNT
                 </button>
 
             </form>
 
             <p class="forgot" onclick="resetPassword()">
-                Forgot your password?
+                Forgot Password?
             </p>
 
             <p class="message" id="loginMessage"></p>
 
         </div>
 
-        <div class="info-panel">
+        <div class="info-card">
 
-            <h2>Your Account, Your Information</h2>
+            <img
+                src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=85"
+                alt="Customer using digital financial services"
+            >
 
-            <div class="info-item">
+            <div class="info-content">
 
-                <div class="info-icon">01</div>
+                <h2>Your Customer Account</h2>
 
-                <div>
-                    <h3>Private Customer Access</h3>
-                    <p>
-                        Your account is created and managed
-                        by the administrator.
-                    </p>
+                <div class="feature">
+
+                    <div class="feature-icon">✓</div>
+
+                    <div>
+                        <h3>Private Account Access</h3>
+                        <p>
+                            Your login details are created
+                            by the administrator.
+                        </p>
+                    </div>
+
                 </div>
 
-            </div>
+                <div class="feature">
 
-            <div class="info-item">
+                    <div class="feature-icon">✓</div>
 
-                <div class="info-icon">02</div>
+                    <div>
+                        <h3>Personal Information</h3>
+                        <p>
+                            Access the customer information
+                            assigned to your account.
+                        </p>
+                    </div>
 
-                <div>
-                    <h3>Personal Account Details</h3>
-                    <p>
-                        Sign in to view the customer
-                        information assigned to your account.
-                    </p>
                 </div>
 
-            </div>
+                <div class="feature">
 
-            <div class="info-item">
+                    <div class="feature-icon">✓</div>
 
-                <div class="info-icon">03</div>
+                    <div>
+                        <h3>Account Updates</h3>
+                        <p>
+                            View updates made available
+                            by your administrator.
+                        </p>
+                    </div>
 
-                <div>
-                    <h3>Secure Login</h3>
-                    <p>
-                        Your login is protected by
-                        Supabase authentication.
-                    </p>
                 </div>
 
-            </div>
-
-            <div class="security-note">
-                For account assistance, contact the
-                administrator who provided your login details.
             </div>
 
         </div>
@@ -536,24 +523,26 @@ footer {
 
 <div class="dashboard hidden" id="dashboard">
 
-    <div class="welcome-card">
+    <div class="welcome">
 
-        <h2>Welcome, <span id="customerName">Customer</span></h2>
+        <h2>
+            Welcome, <span id="customerName">Customer</span>
+        </h2>
 
         <p>
-            You are successfully signed in to your
-            customer portal.
+            You have successfully signed in
+            to your customer account.
         </p>
 
     </div>
 
     <div class="dashboard-card">
 
-        <h3>Customer Account Information</h3>
+        <h3>Customer Information</h3>
 
         <div class="detail">
             <small>Full Name</small>
-            <strong id="dashboardName">Customer</strong>
+            <strong id="dashboardName"></strong>
         </div>
 
         <div class="detail">
@@ -568,30 +557,19 @@ footer {
 
     </div>
 
-    <div class="dashboard-card">
-
-        <h3>Account Updates</h3>
-
-        <p style="color:#718096; font-size:14px; line-height:1.7;">
-            Account information and updates will appear here
-            when configured by your administrator.
-        </p>
-
-    </div>
-
     <button class="logout" onclick="logout()">
-        Sign Out
+        LOG OUT
     </button>
 
 </div>
 
 <footer>
 
-    CUSTOMER BANKING PORTAL
+    <strong>TRUSTNOVA BANKING</strong>
 
     <br>
 
-    Secure Customer Account Access
+    Customer Account Portal
 
     <br><br>
 
@@ -599,8 +577,8 @@ footer {
 
     <br>
 
-    Independent Customer Portal.
-    Real financial transfers require authorized payment services.
+    Independent customer portal. Not a licensed bank.
+    Financial transfers require authorized payment services.
 
 </footer>
 
@@ -641,21 +619,30 @@ document.getElementById("loginForm")
 
     button.disabled = true;
 
-    const { error } = await db.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
+    try {
 
-    button.disabled = false;
+        const { error } = await db.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
 
-    if (error) {
+        if (error) {
+            loginMessage.textContent = error.message;
+            return;
+        }
 
-        loginMessage.textContent = error.message;
+        await loadDashboard();
 
-        return;
+    } catch (error) {
+
+        loginMessage.textContent =
+        "Unable to sign in. Please try again.";
+
+    } finally {
+
+        button.disabled = false;
+
     }
-
-    await loadDashboard();
 
 });
 
@@ -705,7 +692,6 @@ async function loadDashboard() {
         profile.customer_id || "Not assigned";
 
         loginPage.classList.add("hidden");
-
         dashboard.classList.remove("hidden");
 
         window.scrollTo(0, 0);
@@ -724,15 +710,12 @@ async function resetPassword() {
     document.getElementById("loginEmail").value.trim();
 
     if (!email) {
-
         loginMessage.textContent =
         "Please enter your email address first.";
-
         return;
     }
 
-    loginMessage.textContent =
-    "Requesting password recovery...";
+    loginMessage.textContent = "Requesting password recovery...";
 
     const { error } = await db.auth.resetPasswordForEmail(email, {
         redirectTo: window.location.origin
@@ -740,7 +723,7 @@ async function resetPassword() {
 
     loginMessage.textContent = error
         ? error.message
-        : "If the email is registered, password recovery instructions will be sent.";
+        : "If the email is registered, recovery instructions will be sent.";
 
 }
 
@@ -749,7 +732,6 @@ async function logout() {
     await db.auth.signOut();
 
     dashboard.classList.add("hidden");
-
     loginPage.classList.remove("hidden");
 
     document.getElementById("loginForm").reset();
