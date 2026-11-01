@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Banking Portal</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f5f8;
+    color: #222;
+}
+
+header {
+    background: #a60000;
+    color: white;
+    padding: 22px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+header p {
+    margin-top: 7px;
+    font-size: 13px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 15px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+h2 {
+    margin-bottom: 18px;
+    color: #a60000;
+}
+
+label {
+    display: block;
+    margin: 13px 0 7px;
+    font-weight: bold;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+button {
+    background: #a60000;
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 7px;
+    font-size: 16px;
+    margin-top: 18px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #800000;
+}
+
+.balance {
+    background: #a60000;
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.balance h2 {
+    color: white;
+}
+
+.balance h1 {
+    font-size: 30px;
+    margin-top: 12px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+.notice {
+    background: #fff4d6;
+    padding: 13px;
+    border-radius: 7px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #777;
+    font-size: 13px;
+}
+
+@media(max-width:600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>CUSTOMER BANKING PORTAL</h1>
+    <p>Secure Customer Account Services</p>
+</header>
+
+<div class="container">
+
+    <div class="notice">
+        Secure banking portal interface. Live banking services require
+        an authorized bank API connection.
+    </div>
+
+    <!-- LOGIN -->
+    <div class="card" id="loginSection">
+
+        <h2>Customer Login</h2>
+
+        <form id="loginForm">
+
+            <label>Customer ID</label>
+            <input type="text" id="customerId"
+            placeholder="Enter your customer ID" required>
+
+            <button type="submit">Continue</button>
+
+        </form>
+
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="hidden">
+
+        <div class="balance">
+
+            <h2>Welcome, Customer</h2>
+
+            <p>Account Balance</p>
+
+            <h1>₦ ————</h1>
+
+            <p>Balance available after secure account connection</p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Account Information</h2>
+
+            <p>Customer ID: <span id="displayId"></span></p>
+
+            <p>Account Number: Not connected</p>
+
+            <p>Account Status: Awaiting verification</p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Transfer Request</h2>
+
+            <form id="transferForm">
+
+                <label>Beneficiary Name</label>
+                <input type="text" required>
+
+                <label>Beneficiary Bank</label>
+                <select required>
+                    <option value="">Select Bank</option>
+                    <option>UBA</option>
+                    <option>Access Bank</option>
+                    <option>First Bank</option>
+                    <option>GTBank</option>
+                    <option>Zenith Bank</option>
+                    <option>Other</option>
+                </select>
+
+                <label>Beneficiary Account Number</label>
+                <input type="text" maxlength="10"
+                pattern="[0-9]{10}" required>
+
+                <label>Transfer Amount (₦)</label>
+                <input type="number" min="1"
+                placeholder="Enter amount" required>
+
+                <label>Transfer Description</label>
+                <textarea rows="3"></textarea>
+
+                <button type="submit">
+                    Submit Transfer Request
+                </button>
+
+            </form>
+
+            <p id="transferMessage"></p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Transaction History</h2>
+
+            <p>Transactions will appear here after secure banking integration.</p>
+
+        </div>
+
+        <button onclick="logout()">Logout</button>
+
+    </div>
+
+</div>
+
+<footer>
+    Customer Banking Portal
+    <br><br>
+    © 2026 All Rights Reserved.
+</footer>
+
+<script>
+
+document.getElementById("loginForm")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const customerId =
+    document.getElementById("customerId").value.trim();
+
+    if (!customerId) return;
+
+    document.getElementById("displayId").textContent = customerId;
+
+    document.getElementById("loginSection").classList.add("hidden");
+
+    document.getElementById("dashboard").classList.remove("hidden");
+
+});
+
+document.getElementById("transferForm")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    document.getElementById("transferMessage").textContent =
+    "Transfer requests are unavailable until the authorized banking API is connected.";
+
+});
+
+function logout() {
+
+    document.getElementById("dashboard").classList.add("hidden");
+
+    document.getElementById("loginSection").classList.remove("hidden");
+
+    document.getElementById("loginForm").reset();
+
+}
+
+</script>
+
+</body>
+</html>
