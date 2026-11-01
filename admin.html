@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sterling Bank of Nigeria | Admin</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f2f5f3;
+    color: #222;
+}
+
+header {
+    background: #087443;
+    color: white;
+    padding: 22px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+header p {
+    margin-top: 7px;
+    font-size: 12px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 15px;
+}
+
+.notice {
+    background: #fff3cd;
+    border: 1px solid #ffe69c;
+    padding: 12px;
+    border-radius: 7px;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+.login-box, .dashboard-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #087443;
+    margin-bottom: 18px;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 13px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+button {
+    background: #087443;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #055a33;
+}
+
+.logout {
+    background: #b42318;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 9px;
+    border-left: 5px solid #087443;
+}
+
+.stat-card h3 {
+    font-size: 13px;
+    color: #666;
+}
+
+.stat-card p {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    font-size: 13px;
+}
+
+th {
+    background: #e8f3ed;
+    color: #087443;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>STERLING BANK OF NIGERIA</h1>
+    <p>ADMINISTRATION PORTAL</p>
+</header>
+
+<div class="container">
+
+<div class="notice">
+    DEMONSTRATION SYSTEM — No real banking transactions or funds are processed.
+</div>
+
+<div class="login-box" id="loginBox">
+    <h2>Administrator Login</h2>
+
+    <input type="email" id="adminEmail"
+    placeholder="Administrator Email">
+
+    <input type="password" id="adminPassword"
+    placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <p id="loginMessage" style="color:red;margin-top:10px;"></p>
+</div>
+
+<div class="hidden" id="dashboard">
+
+    <div class="dashboard-box">
+        <h2>Welcome, Administrator</h2>
+        <button class="logout" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <h3>Total Customers</h3>
+            <p id="totalCustomers">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Active Accounts</h3>
+            <p id="activeAccounts">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Pending Transfers</h3>
+            <p id="pendingTransfers">0</p>
+        </div>
+
+    </div>
+
+    <div class="dashboard-box">
+
+        <h2>Create Customer Profile</h2>
+
+        <input type="text" id="customerName"
+        placeholder="Customer Full Name">
+
+        <input type="email" id="customerEmail"
+        placeholder="Customer Email">
+
+        <input type="text" id="accountNumber"
+        placeholder="Demo Account Reference">
+
+        <input type="number" id="accountBalance"
+        placeholder="Demo Balance">
+
+        <select id="accountStatus">
+            <option value="Active">Active</option>
+            <option value="Pending">Pending</option>
+            <option value="Suspended">Suspended</option>
+        </select>
+
+        <button onclick="createCustomer()">
+            Create Customer
+        </button>
+
+    </div>
+
+    <div class="dashboard-box">
+
+        <h2>Customer Management</h2>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Reference</th>
+                        <th>Demo Balance</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="customerList"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<footer>
+    Sterling Bank of Nigeria | Administrative Prototype
+</footer>
+
+<script>
+
+const ADMIN_EMAIL = "admin@example.com";
+const ADMIN_PASSWORD = "ChangeThisPassword123!";
+
+let customers = JSON.parse(
+    localStorage.getItem("demoCustomers") || "[]"
+);
+
+function login() {
+
+    const email = document.getElementById("adminEmail").value;
+    const password = document.getElementById("adminPassword").value;
+
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("dashboard").classList.remove("hidden");
+
+        renderCustomers();
+
+    } else {
+
+        document.getElementById("loginMessage").textContent =
+            "Invalid administrator login.";
+
+    }
+}
+
+function logout() {
+
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("loginBox").classList.remove("hidden");
+
+}
+
+function createCustomer() {
+
+    const name = document.getElementById("customerName").value.trim();
+    const email = document.getElementById("customerEmail").value.trim();
+    const reference = document.getElementById("accountNumber").value.trim();
+    const balance = Number(document.getElementById("accountBalance").value);
+    const status = document.getElementById("accountStatus").value;
+
+    if (!name || !email || !reference ||
+        document.getElementById("accountBalance").value === "" ||
+        !Number.isFinite(balance) || balance < 0) {
+
+        alert("Please complete all fields correctly.");
+        return;
+    }
+
+    if (customers.some(c => c.email.toLowerCase() === email.toLowerCase())) {
+        alert("This customer already exists.");
+        return;
+    }
+
+    customers.push({
+        name,
+        email,
+        reference,
+        balance,
+        status
+    });
+
+    localStorage.setItem("demoCustomers", JSON.stringify(customers));
+
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerEmail").value = "";
+    document.getElementById("accountNumber").value = "";
+    document.getElementById("accountBalance").value = "";
+
+    renderCustomers();
+
+    alert("Demo customer profile created successfully.");
+
+}
+
+function renderCustomers() {
+
+    const list = document.getElementById("customerList");
+
+    list.innerHTML = "";
+
+    customers.forEach(customer => {
+
+        const row = document.createElement("tr");
+
+        [
+            customer.name,
+            customer.email,
+            customer.reference,
+            "₦" + customer.balance.toLocaleString("en-NG"),
+            customer.status
+        ].forEach(value => {
+
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+
+        });
+
+        list.appendChild(row);
+
+    });
+
+    document.getElementById("totalCustomers").textContent =
+        customers.length;
+
+    document.getElementById("activeAccounts").textContent =
+        customers.filter(c => c.status === "Active").length;
+
+    document.getElementById("pendingTransfers").textContent = "0";
+
+}
+
+</script>
+
+</body>
+</html>
